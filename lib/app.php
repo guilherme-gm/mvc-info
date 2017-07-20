@@ -10,6 +10,7 @@ namespace Lib;
 
 use Lib\Router;
 use Lib\View;
+use Lib\Lang;
 
 /**
  * Description of App
@@ -30,6 +31,8 @@ class App {
 
     public static function run() {
 	self::$router = new Router();
+	
+	Lang::load(self::$router->getLanguage());
 
 	$controller_class = 'Controllers\\' . ucfirst(self::$router->getController()) . 'Controller';
 	$controller_method = strtolower(self::$router->getMethodPrefix() . self::$router->getAction());

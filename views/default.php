@@ -12,6 +12,7 @@ and open the template in the editor.
     </head>
     <body>
 	<h2>Cabeçalho</h2>
+	<p><?= __('lng.teste2', 'Sem frase') ?></p>
         <?= $data['content'] ?>
 	<h2>Rodapé</h2>
     </body>
