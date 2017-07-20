@@ -3,13 +3,12 @@
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
 
-use Lib\Router;
+use Lib\App;
 
 require_once ROOT . DS . 'lib' . DS . 'init.php';
 
-$router = new Router();
-echo "Route: {$router->getRoute()} <br/>"
- . "Prefix: {$router->getMethodPrefix()}<br/>"
- . "Controller: {$router->getController()}<br />"
- . "Action: {$router->getAction()}<br />"
- . "Language: {$router->getLanguage()}";
+try {
+    App::run();
+} catch (Exception $ex) {
+    echo "Erro inesperado: {$ex->getMessage()}";
+}
