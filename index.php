@@ -2,7 +2,7 @@
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
-
+define('VIEW_PATH', ROOT . DS . 'views');
 use Lib\App;
 
 require_once ROOT . DS . 'lib' . DS . 'init.php';

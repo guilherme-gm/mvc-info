@@ -96,11 +96,11 @@ class Router {
 	    $this->language = $lang;
 	}
 
-	echo "Route: {$this->getRoute()} <br/>"
-	. "Prefix: {$this->getMethodPrefix()}<br/>"
-	. "Controller: {$this->getController()}<br />"
-	. "Action: {$this->getAction()}<br />"
-	. "Language: {$this->getLanguage()}<br />";
+//	echo "Route: {$this->getRoute()} <br/>"
+//	. "Prefix: {$this->getMethodPrefix()}<br/>"
+//	. "Controller: {$this->getController()}<br />"
+//	. "Action: {$this->getAction()}<br />"
+//	. "Language: {$this->getLanguage()}<br />";
     }
 
 }

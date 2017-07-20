@@ -9,6 +9,7 @@
 namespace Lib;
 
 use Lib\Router;
+use Lib\View;
 
 /**
  * Description of App
@@ -36,10 +37,17 @@ class App {
 	// Chama o controller
 	$controller = new $controller_class();
 	if (method_exists($controller, $controller_method)) {
-	    $controller->$controller_method();
+	    $view_path = $controller->$controller_method();
+	    $view_object = new View($controller->getData(), $view_path);
+	    $content = $view_object->render();
 	} else {
 	    throw new \Exception("Método {$controller_method} da classe {$controller_class} não existe.");
 	}
+	
+	$layout = self::$router->getRoute();
+	$layout_path = VIEW_PATH . DS . $layout . '.php';
+	$layout_view_object = new View(compact('content'), $layout_path);
+	echo $layout_view_object->render();
     }
 
 }
