@@ -11,6 +11,7 @@ namespace Lib;
 use Lib\Router;
 use Lib\View;
 use Lib\Lang;
+use Lib\DB;
 
 /**
  * Description of App
@@ -24,13 +25,24 @@ class App {
      * @var Router
      */
     protected static $router;
+    
+    /**
+     *
+     * @var DB
+     */
+    protected static $db;
 
     static function getRouter() {
 	return self::$router;
     }
+    
+    static function getDb() {
+	return self::$db;
+    }
 
     public static function run() {
 	self::$router = new Router();
+	self::$db = new DB(Config::get('db.host'), Config::get('db.user'), Config::get('db.password'), Config::get('db.name'));
 	
 	Lang::load(self::$router->getLanguage());
 
@@ -44,8 +56,11 @@ class App {
 	    $view_object = new View($controller->getData(), $view_path);
 	    $content = $view_object->render();
 	} else {
+	    self::$db->close();
 	    throw new \Exception("Método {$controller_method} da classe {$controller_class} não existe.");
 	}
+	
+	self::$db->close();
 	
 	$layout = self::$router->getRoute();
 	$layout_path = VIEW_PATH . DS . $layout . '.php';

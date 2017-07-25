@@ -12,3 +12,10 @@ try {
 } catch (Exception $ex) {
     echo "Erro inesperado: {$ex->getMessage()}";
 }
+
+//$db = App::getDb();
+//$con = $db->getConnection();
+//$res = $con->query('SELECT * FROM Pagina');
+//while ($row = $res->fetch_assoc()) {
+//    var_dump($row);
+//}
