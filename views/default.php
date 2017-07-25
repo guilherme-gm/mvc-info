@@ -1,3 +1,7 @@
+<?php
+
+use Lib\Session;
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -41,6 +45,12 @@ To change this license header, choose License Headers in Project Properties.
     <div class="container">
 
 	<div class="starter-template">
+	    <?php if (Session::hasFlash()): ?>
+    	    <div class="alert alert-info" role="alert">
+		    <?php Session::flash(); ?>
+    	    </div>
+	    <?php endif; ?>
+	    
 	    <?= $data['content'] ?>
 	</div>
 

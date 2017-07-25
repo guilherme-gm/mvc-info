@@ -9,6 +9,7 @@
 namespace Controllers;
 
 use Lib\Controller;
+use Lib\Session;
 use Models\Mensagem;
 
 /**
@@ -17,22 +18,24 @@ use Models\Mensagem;
  * @author guilh
  */
 class ContatoController extends Controller {
-    
+
     public function index() {
 	if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 	    $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
 	    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 	    $mensagem = filter_input(INPUT_POST, 'mensagem', FILTER_SANITIZE_STRING);
-	    
+
 	    if ($nome == FALSE || $email == FALSE || $mensagem == FALSE) {
-		die('Todos os campos são obrigatórios.');
+		Session::setFlash('Todos os campos são obrigatórios.');
 	    } else if (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
-		die('Email inválido.');
+		Session::setFlash('Email inválido.');
+	    } else {
+		$msg = new Mensagem(0, $nome, $email, $mensagem);
+		Mensagem::insere($msg);
+		
+		Session::setFlash('Mensagem enviada com sucesso.');
 	    }
-	    
-	    $msg = new Mensagem(0, $nome, $email, $mensagem);
-	    Mensagem::insere($msg);
 	}
     }
-    
+
 }
