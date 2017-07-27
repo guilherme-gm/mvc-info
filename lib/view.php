@@ -37,7 +37,7 @@ class View {
 	}
 	
 	if (!file_exists($path)) {
-	    throw new Exception("Template não foi encontrado: {$path}");
+	    throw new \Exception("Template não foi encontrado: {$path}");
 	}
 	
 	$this->data = $data;

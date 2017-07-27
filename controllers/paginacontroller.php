@@ -23,4 +23,20 @@ class PaginaController extends Controller {
 	}
     }
     
+    public function admin_index() {
+	$this->data['paginas'] = Pagina::getPaginas();
+    }
+    
+    public function admin_nova() {
+	
+    }
+    
+    public function admin_editar() {
+	
+    }
+    
+    public function admin_excluir() {
+	
+    }
+    
 }
