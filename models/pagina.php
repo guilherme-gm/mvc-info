@@ -49,7 +49,7 @@ class Pagina extends Model {
     }
     
     public static function getPaginaPorId($idPagina) {
-	$conn = self::$db->getConnection();
+	$conn = DB::getConnection();
 	
 	$query = 'SELECT `idPagina`, `titulo`, `conteudo`, `publicado` FROM `Pagina` WHERE `idPagina` = ?';
 	$stmt = $conn->prepare($query);

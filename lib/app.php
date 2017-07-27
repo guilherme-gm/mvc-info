@@ -29,18 +29,27 @@ class App {
     static function getRouter() {
 	return self::$router;
     }
-    
+
     static function getDb() {
 	return self::$db;
     }
 
     public static function run() {
 	self::$router = new Router();
-	
+
 	Lang::load(self::$router->getLanguage());
 
 	$controller_class = 'Controllers\\' . ucfirst(self::$router->getController()) . 'Controller';
 	$controller_method = strtolower(self::$router->getMethodPrefix() . self::$router->getAction());
+
+	$layout = self::$router->getRoute();
+	if ($layout == 'admin' &&
+		(Session::get('usuario') == NULL || Session::get('usuario')->getCargo() != 'admin')
+	) {
+	    if ($controller_method != 'admin_login') {
+		Router::redirect('?route=admin&module=usuario&action=login');
+	    }
+	}
 
 	// Chama o controller
 	$controller = new $controller_class();
@@ -51,8 +60,8 @@ class App {
 	} else {
 	    throw new \Exception("Método {$controller_method} da classe {$controller_class} não existe.");
 	}
-	
-	$layout = self::$router->getRoute();
+
+
 	$layout_path = VIEW_PATH . DS . $layout . '.php';
 	$layout_view_object = new View(compact('content'), $layout_path);
 	echo $layout_view_object->render();

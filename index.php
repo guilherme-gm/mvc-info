@@ -5,9 +5,9 @@ define('ROOT', dirname(__FILE__));
 define('VIEW_PATH', ROOT . DS . 'views');
 use Lib\App;
 
-session_start();
-
 require_once ROOT . DS . 'lib' . DS . 'init.php';
+
+session_start();
 
 try {
     App::run();

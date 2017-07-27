@@ -34,10 +34,13 @@ To change this license header, choose License Headers in Project Properties.
 		<a class="navbar-brand" href="./?route=admin"><?= Lib\Config::get('site_name') ?> - Administrador</a>
 	    </div>
 	    <div id="navbar" class="collapse navbar-collapse">
-		<ul class="nav navbar-nav">
-		    <li <?php if (Lib\App::getRouter()->getController() == 'pagina') { ?>class="active"<?php } ?>><a href="?route=admin&module=pagina">Paginas</a></li>
-		    <li <?php if (Lib\App::getRouter()->getController() == 'contato') { ?>class="active"<?php } ?>><a href="?route=admin&module=contato">Contato</a></li>
-		</ul>
+		<?php if (Session::get('usuario')): ?>
+    		<ul class="nav navbar-nav">
+    		    <li <?php if (Lib\App::getRouter()->getController() == 'pagina') { ?>class="active"<?php } ?>><a href="?route=admin&module=pagina">Paginas</a></li>
+    		    <li <?php if (Lib\App::getRouter()->getController() == 'contato') { ?>class="active"<?php } ?>><a href="?route=admin&module=contato">Contato</a></li>
+		    <li><a href="?route=admin&module=usuario&action=logout">Logout</a></li>
+    		</ul>
+		<?php endif; ?>
 	    </div><!--/.nav-collapse -->
 	</div>
     </nav>
@@ -50,7 +53,7 @@ To change this license header, choose License Headers in Project Properties.
 		    <?php Session::flash(); ?>
     	    </div>
 	    <?php endif; ?>
-	    
+
 	    <?= $data['content'] ?>
 	</div>
 
