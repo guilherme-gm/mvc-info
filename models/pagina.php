@@ -8,6 +8,7 @@
 
 namespace Models;
 
+use Lib\DB;
 use Lib\Model;
 
 /**
@@ -25,7 +26,7 @@ class Pagina extends Model {
     //private $autor;
 
     public static function getPaginas($apenasPublicado = false) {
-	$conn = self::$db->getConnection();
+	$conn = DB::getConnection();
 	
 	if ($apenasPublicado == FALSE) {
 	    $query = 'SELECT `idPagina`, `titulo`, `conteudo`, `publicado` FROM `Pagina`';
@@ -84,7 +85,7 @@ class Pagina extends Model {
      * @throws \Exception
      */
     public static function inserir($pagina) {
-	$conn = self::$db->getConnection();
+	$conn = DB::getConnection();
 	
 	$query = 'INSERT INTO `Pagina` (`titulo`, `conteudo`, `publicado`, `Usuario_idUsuario`) VALUES (?, ?, ?, ?)';
 	$stmt = $conn->prepare($query);
@@ -114,7 +115,7 @@ class Pagina extends Model {
      * @throws \Exception
      */
     public static function atualizar($pagina) {
-	$conn = self::$db->getConnection();
+	$conn = DB::getConnection();
 	
 	$query = 'UPDATE `Pagina` SET `titulo` = ?, `conteudo` = ?, `publicado` = ?, `Usuario_idUsuario` = ? WHERE `idPagina` = ?';
 	$stmt = $conn->prepare($query);
@@ -144,7 +145,7 @@ class Pagina extends Model {
      * @throws \Exception
      */
     public static function excluir($idPagina) {
-	$conn = self::$db->getConnection();
+	$conn = DB::getConnection();
 	
 	$query = 'DELETE FROM `Pagina` WHERE `idPagina` = ?';
 	$stmt = $conn->prepare($query);

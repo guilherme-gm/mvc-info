@@ -17,19 +17,8 @@ use Lib\DB;
  */
 class Model {
     
-    /**
-     *
-     * @var DB
-     */
-    protected static $db;
-    
-    public static function init() {
-	self::$db = App::getDb();
-    }
-    
     public function __construct() {
 	
     }
     
 }
-Model::init();

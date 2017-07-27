@@ -15,6 +15,8 @@ try {
     echo "Erro inesperado: {$ex->getMessage()}";
 }
 
+\Lib\DB::close();
+
 //$db = App::getDb();
 //$con = $db->getConnection();
 //$res = $con->query('SELECT * FROM Pagina');

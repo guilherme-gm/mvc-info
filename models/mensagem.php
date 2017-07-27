@@ -8,6 +8,7 @@
 
 namespace Models;
 
+use Lib\DB;
 use Lib\Model;
 
 /**
@@ -23,7 +24,7 @@ class Mensagem extends Model {
     private $mensagem;
 
     public static function getMensagens() {
-	$conn = self::$db->getConnection();
+	$conn = DB::getConnection();
 	
 	$query = 'SELECT `idMensagem`, `nome`, `email`, `mensagem` FROM `Mensagem`';
 	$result = $conn->query($query);
@@ -48,7 +49,7 @@ class Mensagem extends Model {
      * @throws \Exception
      */
     public static function insere($msg) {
-	$conn = self::$db->getConnection();
+	$conn = DB::getConnection();
 	
 	$query = 'INSERT INTO `Mensagem` (`nome`, `email`, `mensagem`) VALUES (?, ?, ?)';
 	$stmt = $conn->prepare($query);
