@@ -37,5 +37,9 @@ class ContatoController extends Controller {
 	    }
 	}
     }
+    
+    public function admin_index() {
+	$this->data['mensagens'] = Mensagem::getMensagens();
+    }
 
 }

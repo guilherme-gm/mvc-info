@@ -3,4 +3,4 @@
 $pagina = $data['pagina'];
 ?>
 <h2><?= $pagina->getTitulo() ?></h2>
-<p><?= $pagina->getConteudo() ?></p>
+<p><?= nl2br($pagina->getConteudo()) ?></p>

@@ -22,6 +22,25 @@ class Mensagem extends Model {
     private $email;
     private $mensagem;
 
+    public static function getMensagens() {
+	$conn = self::$db->getConnection();
+	
+	$query = 'SELECT `idMensagem`, `nome`, `email`, `mensagem` FROM `Mensagem`';
+	$result = $conn->query($query);
+	if ($result === FALSE) {
+	    throw new \Exception("Falha ao carregar lista de Mensagens. Erro: {$conn->error}");
+	}
+	
+	$mensagens = [];
+	while ($row = $result->fetch_assoc()) {
+	    $mensagens[] = new Mensagem($row['idMensagem'], $row['nome'], $row['email'], $row['mensagem']);
+	}
+	
+	$result->close();
+	
+	return $mensagens;
+    }
+    
     /**
      * 
      * @param Mensagem $msg
