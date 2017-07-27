@@ -9,7 +9,7 @@
 	<textarea name="conteudo" id="conteudo" class="form-control" placeholder="Título"></textarea>
     </div>
     <div class="form-group">
-	<input type="checkbox" name="publicado" id="publicado"/>
+	<input type="checkbox" name="publicado" id="publicado" checked=""/>
 	<label for="publicado">Publicado</label>
     </div>
     

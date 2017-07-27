@@ -76,6 +76,92 @@ class Pagina extends Model {
 	
 	return $pagina;
     }
+    
+    /**
+     * 
+     * @param Pagina $pagina
+     * @return type
+     * @throws \Exception
+     */
+    public static function inserir($pagina) {
+	$conn = self::$db->getConnection();
+	
+	$query = 'INSERT INTO `Pagina` (`titulo`, `conteudo`, `publicado`, `Usuario_idUsuario`) VALUES (?, ?, ?, ?)';
+	$stmt = $conn->prepare($query);
+	if ($stmt === FALSE) {
+	    throw new \Exception("Falha ao preparar query. Erro: {$conn->error}");
+	}
+	
+	$titulo = $pagina->getTitulo();
+	$conteudo = $pagina->getConteudo();
+	$publicado = $pagina->getPublicado();
+	$idUsuario = 1;
+	if ($stmt->bind_param('ssii', $titulo, $conteudo, $publicado, $idUsuario) === FALSE) {
+	    throw new \Exception("Falha ao associar parametros. Erro: {$stmt->error}");
+	}
+	
+	if ($stmt->execute() === FALSE) {
+	    throw new \Exception("Falha ao executar query. Erro: {$stmt->error}");
+	}
+	
+	$stmt->close();
+    }
+    
+    /**
+     * 
+     * @param Pagina $pagina
+     * @return type
+     * @throws \Exception
+     */
+    public static function atualizar($pagina) {
+	$conn = self::$db->getConnection();
+	
+	$query = 'UPDATE `Pagina` SET `titulo` = ?, `conteudo` = ?, `publicado` = ?, `Usuario_idUsuario` = ? WHERE `idPagina` = ?';
+	$stmt = $conn->prepare($query);
+	if ($stmt === FALSE) {
+	    throw new \Exception("Falha ao preparar query. Erro: {$conn->error}");
+	}
+	
+	$idPagina = $pagina->getIdPagina();
+	$titulo = $pagina->getTitulo();
+	$conteudo = $pagina->getConteudo();
+	$publicado = $pagina->getPublicado();
+	$idUsuario = 1;
+	if ($stmt->bind_param('ssiii', $titulo, $conteudo, $publicado, $idUsuario, $idPagina) === FALSE) {
+	    throw new \Exception("Falha ao associar parametros. Erro: {$stmt->error}");
+	}
+	
+	if ($stmt->execute() === FALSE) {
+	    throw new \Exception("Falha ao executar query. Erro: {$stmt->error}");
+	}
+	
+	$stmt->close();
+    }
+    
+    /**
+     * 
+     * @return type
+     * @throws \Exception
+     */
+    public static function excluir($idPagina) {
+	$conn = self::$db->getConnection();
+	
+	$query = 'DELETE FROM `Pagina` WHERE `idPagina` = ?';
+	$stmt = $conn->prepare($query);
+	if ($stmt === FALSE) {
+	    throw new \Exception("Falha ao preparar query. Erro: {$conn->error}");
+	}
+	
+	if ($stmt->bind_param('i', $idPagina) === FALSE) {
+	    throw new \Exception("Falha ao associar parametros. Erro: {$stmt->error}");
+	}
+	
+	if ($stmt->execute() === FALSE) {
+	    throw new \Exception("Falha ao executar query. Erro: {$stmt->error}");
+	}
+	
+	$stmt->close();
+    }
 
     function getIdPagina() {
 	return $this->idPagina;

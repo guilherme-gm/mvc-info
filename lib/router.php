@@ -102,5 +102,10 @@ class Router {
 //	. "Action: {$this->getAction()}<br />"
 //	. "Language: {$this->getLanguage()}<br />";
     }
+    
+    public static function redirect($url) {
+	header("location:$url");
+	exit();
+    }
 
 }
