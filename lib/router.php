@@ -20,6 +20,7 @@ class Router {
     protected $route;
     protected $methodPrefix;
     protected $language;
+    protected $params;
 
     function getController() {
 	return $this->controller;
@@ -60,7 +61,60 @@ class Router {
     function setLanguage($language) {
 	$this->language = $language;
     }
+    
+    function getParams() {
+	return $this->params;
+    }
 
+    function setParams($params) {
+	$this->params = $params;
+    }
+    
+    protected function parseFriendlyUri($routes, $uri) {
+	$uri_parts = explode('?', $uri);
+	
+	// site/lang/route/controller/action/param1/param2/..../paramN?
+	// site/route/controller/action/param1/param2/..../paramN?
+	// site/controller/action/param1/param2/..../paramN?
+	$path = $uri_parts[0];
+	$path_parts = explode('/', $path);
+	
+	$path_parts = array_reverse($path_parts);
+	
+	// Idioma
+	$language = end($path_parts);
+	if ($language != FALSE && in_array($language, Config::get('languages'))) {
+	    $this->language = $language;
+	    array_pop($path_parts);
+	}
+	
+	// Route
+	$route = end($path_parts);
+	if ($route != FALSE && isset($routes[$route])) {
+	    $this->route = $route;
+	    $this->methodPrefix = $routes[$route];
+	    array_pop($path_parts);
+	}
+	
+	// Modulo/Controller
+	$module = end($path_parts);
+	if ($module != FALSE) {
+	    $this->controller = strtolower($module);
+	    array_pop($path_parts);
+	}
+	
+	
+	// Action
+	$action = end($path_parts);
+	if ($action != FALSE) {
+	    $this->action = strtolower($action);
+	    array_pop($path_parts);
+	}
+	
+	return array_reverse($path_parts);
+    }
+
+    
     function __construct() {
 	// Carrega Padrões
 	$routes = Config::get('routes');
@@ -70,37 +124,41 @@ class Router {
 	$this->controller = Config::get('default_controller');
 	$this->action = Config::get('default_action');
 	$this->language = Config::get('default_language');
+	
+	$uri = filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL);
+	$uri = substr($uri, strlen(Config::get('base_uri')));
+	$this->params = $this->parseFriendlyUri($routes, $uri);
+	
+//	// Route
+//	$route = filter_input(INPUT_GET, 'route', FILTER_SANITIZE_STRING);
+//	if ($route != FALSE && isset($routes[$route])) {
+//	    $this->route = $route;
+//	    $this->methodPrefix = $routes[$route];
+//	}
+//
+//	// Controller
+//	$module = filter_input(INPUT_GET, 'module', FILTER_SANITIZE_STRING);
+//	if ($module != FALSE) {
+//	    $this->controller = strtolower($module);
+//	}
+//
+//	// Action
+//	$action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
+//	if ($action != FALSE) {
+//	    $this->action = strtolower($action);
+//	}
+//
+//	// Language
+//	$lang = filter_input(INPUT_GET, 'lang', FILTER_SANITIZE_STRING);
+//	if ($lang != FALSE && in_array($lang, Config::get('languages'))) {
+//	    $this->language = $lang;
+//	}
 
-	// Route
-	$route = filter_input(INPUT_GET, 'route', FILTER_SANITIZE_STRING);
-	if ($route != FALSE && isset($routes[$route])) {
-	    $this->route = $route;
-	    $this->methodPrefix = $routes[$route];
-	}
-
-	// Controller
-	$module = filter_input(INPUT_GET, 'module', FILTER_SANITIZE_STRING);
-	if ($module != FALSE) {
-	    $this->controller = strtolower($module);
-	}
-
-	// Action
-	$action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
-	if ($action != FALSE) {
-	    $this->action = strtolower($action);
-	}
-
-	// Language
-	$lang = filter_input(INPUT_GET, 'lang', FILTER_SANITIZE_STRING);
-	if ($lang != FALSE && in_array($lang, Config::get('languages'))) {
-	    $this->language = $lang;
-	}
-
-//	echo "Route: {$this->getRoute()} <br/>"
-//	. "Prefix: {$this->getMethodPrefix()}<br/>"
-//	. "Controller: {$this->getController()}<br />"
-//	. "Action: {$this->getAction()}<br />"
-//	. "Language: {$this->getLanguage()}<br />";
+	echo "Route: {$this->getRoute()} <br/>"
+	. "Prefix: {$this->getMethodPrefix()}<br/>"
+	. "Controller: {$this->getController()}<br />"
+	. "Action: {$this->getAction()}<br />"
+	. "Language: {$this->getLanguage()}<br />";
     }
     
     public static function redirect($url) {

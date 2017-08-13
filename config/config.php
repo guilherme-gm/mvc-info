@@ -3,6 +3,7 @@
 use Lib\Config;
 
 Config::set('site_name', 'Jornal Info');
+Config::set('base_uri', '/jornal/');
 
 Config::set('languages', [ 'pt_br', 'en' ]);
 
