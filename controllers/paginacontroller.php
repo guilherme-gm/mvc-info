@@ -18,8 +18,8 @@ class PaginaController extends Controller {
 	$this->data['paginas'] = Pagina::getPaginas(true);
     }
 
-    public function ver() {
-	$idPagina = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    public function ver($idPagina) {
+	$idPagina = filter_var($idPagina, FILTER_SANITIZE_NUMBER_INT);
 	if ($idPagina != FALSE) {
 	    $this->data['pagina'] = Pagina::getPaginaPorId($idPagina);
 	}
@@ -48,7 +48,7 @@ class PaginaController extends Controller {
 	}
     }
 
-    public function admin_editar() {
+    public function admin_editar($id) {
 	$request = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
 	if ($request === 'POST') {
 	    $idPagina = filter_input(INPUT_POST, 'idPagina', FILTER_SANITIZE_NUMBER_INT);
@@ -70,7 +70,7 @@ class PaginaController extends Controller {
 	    Session::flash('Página atualizada com sucesso.');
 	    Router::redirect('?route=admin&module=pagina');
 	} else if ($request === 'GET') {
-	    $idPagina = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+	    $idPagina = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
 	    if ($idPagina == FALSE || $idPagina < 0) {
 		Session::setFlash('Página não encontrada');
@@ -81,8 +81,8 @@ class PaginaController extends Controller {
 	}
     }
 
-    public function admin_excluir() {
-	$idPagina = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    public function admin_excluir($id) {
+	$idPagina = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
 	if ($idPagina == FALSE || $idPagina < 0) {
 	    Session::setFlash('Página não encontrada');

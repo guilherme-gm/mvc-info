@@ -47,14 +47,14 @@ class App {
 		(Session::get('usuario') == NULL || Session::get('usuario')->getCargo() != 'admin')
 	) {
 	    if ($controller_method != 'admin_login') {
-		Router::redirect('?route=admin&module=usuario&action=login');
+		Router::redirect(self::$router->getUrl('usuario', 'login', [], 'admin'));
 	    }
 	}
 
 	// Chama o controller
 	$controller = new $controller_class();
 	if (method_exists($controller, $controller_method)) {
-	    $view_path = $controller->$controller_method();
+	    $view_path = $controller->$controller_method(...self::$router->getParams());
 	    $view_object = new View($controller->getData(), $view_path);
 	    $content = $view_object->render();
 	} else {

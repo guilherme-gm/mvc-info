@@ -154,16 +154,49 @@ class Router {
 //	    $this->language = $lang;
 //	}
 
-	echo "Route: {$this->getRoute()} <br/>"
-	. "Prefix: {$this->getMethodPrefix()}<br/>"
-	. "Controller: {$this->getController()}<br />"
-	. "Action: {$this->getAction()}<br />"
-	. "Language: {$this->getLanguage()}<br />";
+//	echo "Route: {$this->getRoute()} <br/>"
+//	. "Prefix: {$this->getMethodPrefix()}<br/>"
+//	. "Controller: {$this->getController()}<br />"
+//	. "Action: {$this->getAction()}<br />"
+//	. "Language: {$this->getLanguage()}<br />";
     }
     
     public static function redirect($url) {
 	header("location:$url");
 	exit();
+    }
+    
+    public function getUrl($module = '', $action = '', $params = [], $route = '', $lang = '') {
+	$routes = Config::get('routes');
+	if ($lang == '' || in_array($lang, Config::get('languages')) == FALSE) {
+	    $lang = $this->language;
+	}
+	
+	if ($route == '' && $this->route != Config::get('default_route')) {
+	    $route = $this->route;
+	} else if ($route != '' && isset($routes[$route]) == FALSE) {
+	    $route = '';
+	}
+	
+	$url = Config::get('base_uri');
+	if ($lang != '' && $lang != Config::get('default_language')) {
+	    $url .= "{$lang}/";
+	}
+	if ($route != '' && $route != Config::get('default_route')) {
+	    $url .= "{$route}/";
+	}
+	if ($module != '') {
+	    $url .= "{$module}/";
+	    if ($action != '') {
+		$url .= "{$action}";
+		
+		foreach ($params as $paramName => $paramValue) {
+		    $url .= "{$paramValue}/";
+		}
+	    }
+	}
+	
+	return $url;
     }
 
 }
