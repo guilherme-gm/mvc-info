@@ -188,7 +188,7 @@ class Router {
 	if ($module != '') {
 	    $url .= "{$module}/";
 	    if ($action != '') {
-		$url .= "{$action}";
+		$url .= "{$action}/";
 		
 		foreach ($params as $paramName => $paramValue) {
 		    $url .= "{$paramValue}/";
@@ -197,6 +197,10 @@ class Router {
 	}
 	
 	return $url;
+    }
+    
+    public function getResourceUrl($resource) {
+	return Config::get('base_uri') . $resource;
     }
 
 }

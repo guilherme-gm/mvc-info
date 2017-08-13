@@ -1,5 +1,5 @@
 <?php foreach ($data['paginas'] as $pagina): ?>
 <div class="item-pagina">
-    <a href="?module=pagina&action=ver&id=<?= $pagina->getIdPagina() ?>"><?= $pagina->getTitulo() ?></a>
+    <a href="<?= Lib\App::getRouter()->getUrl('pagina', 'ver', [$pagina->getIdPagina()]) ?>"><?= $pagina->getTitulo() ?></a>
 </div>
 <?php endforeach; ?>

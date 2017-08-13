@@ -5,6 +5,7 @@ namespace Controllers;
 use Lib\Controller;
 use Lib\Session;
 use Lib\Router;
+use Lib\App;
 use Models\Pagina;
 
 /**
@@ -37,14 +38,14 @@ class PaginaController extends Controller {
 
 	    if ($titulo == FALSE || $conteudo == FALSE) {
 		Session::setFlash('Todos os campos são obrigatórios');
-		Router::redirect('?route=admin&module=pagina&action=nova');
+		Router::redirect(App::getRouter()->getUrl('pagina', 'nova'));
 	    }
 
 	    $pagina = new Pagina(0, $titulo, $conteudo, $publicado);
 	    Pagina::inserir($pagina);
 
 	    Session::flash('Página criada com sucesso.');
-	    Router::redirect('?route=admin&module=pagina');
+	    Router::redirect(App::getRouter()->getUrl('pagina'));
 	}
     }
 
@@ -58,23 +59,23 @@ class PaginaController extends Controller {
 
 	    if ($idPagina == FALSE || $idPagina <= 0) {
 		Session::setFlash('Página não encontrada');
-		Router::redirect('?route=admin&module=pagina');
+		Router::redirect(App::getRouter()->getUrl('pagina'));
 	    } else if ($titulo == FALSE || $conteudo == FALSE) {
 		Session::setFlash('Todos os campos são obrigatórios');
-		Router::redirect("?route=admin&module=pagina&action=editar&id={$idPagina}");
+		Router::redirect(App::getRouter()->getUrl('pagina', 'editar', [$idPagina]));
 	    }
 
 	    $pagina = new Pagina($idPagina, $titulo, $conteudo, $publicado);
 	    Pagina::atualizar($pagina);
 
 	    Session::flash('Página atualizada com sucesso.');
-	    Router::redirect('?route=admin&module=pagina');
+	    Router::redirect(App::getRouter()->getUrl('pagina'));
 	} else if ($request === 'GET') {
 	    $idPagina = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
 
 	    if ($idPagina == FALSE || $idPagina < 0) {
 		Session::setFlash('Página não encontrada');
-		Router::redirect('?route=admin&module=pagina');
+		Router::redirect(App::getRouter()->getUrl('pagina'));
 	    }
 
 	    $this->data['pagina'] = Pagina::getPaginaPorId($idPagina);
@@ -86,12 +87,12 @@ class PaginaController extends Controller {
 
 	if ($idPagina == FALSE || $idPagina < 0) {
 	    Session::setFlash('Página não encontrada');
-	    Router::redirect('?route=admin&module=pagina');
+	    Router::redirect(App::getRouter()->getUrl('pagina'));
 	}
 
 	Pagina::excluir($idPagina);
 	Session::setFlash('Página excluída com sucesso.');
-	Router::redirect('?route=admin&module=pagina');
+	Router::redirect(App::getRouter()->getUrl('pagina'));
     }
 
 }

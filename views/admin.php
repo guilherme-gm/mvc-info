@@ -15,9 +15,9 @@ To change this license header, choose License Headers in Project Properties.
 <title><?= Lib\Config::get('site_name') ?></title>
 
 <!-- Bootstrap -->
-<link href="static/css/bootstrap.min.css" rel="stylesheet">
-<link href="static/css/bootstrap-theme.min.css" rel="stylesheet">
-<link href="static/css/style.css" rel="stylesheet">
+<link href="<?= Lib\App::getRouter()->getResourceUrl('static/css/bootstrap.min.css') ?>" rel="stylesheet">
+<link href="<?= Lib\App::getRouter()->getResourceUrl('static/css/bootstrap-theme.min.css') ?>" rel="stylesheet">
+<link href="<?= Lib\App::getRouter()->getResourceUrl('static/css/style.css') ?>" rel="stylesheet">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,14 +31,14 @@ To change this license header, choose License Headers in Project Properties.
     <nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 	    <div class="navbar-header">
-		<a class="navbar-brand" href="./?route=admin"><?= Lib\Config::get('site_name') ?> - Administrador</a>
+		<a class="navbar-brand" href="<?= Lib\App::getRouter()->getUrl('', '', [], 'admin') ?>"><?= Lib\Config::get('site_name') ?> - Administrador</a>
 	    </div>
 	    <div id="navbar" class="collapse navbar-collapse">
 		<?php if (Session::get('usuario')): ?>
     		<ul class="nav navbar-nav">
-    		    <li <?php if (Lib\App::getRouter()->getController() == 'pagina') { ?>class="active"<?php } ?>><a href="?route=admin&module=pagina">Paginas</a></li>
-    		    <li <?php if (Lib\App::getRouter()->getController() == 'contato') { ?>class="active"<?php } ?>><a href="?route=admin&module=contato">Contato</a></li>
-		    <li><a href="?route=admin&module=usuario&action=logout">Logout</a></li>
+    		    <li <?php if (Lib\App::getRouter()->getController() == 'pagina') { ?>class="active"<?php } ?>><a href="<?= Lib\App::getRouter()->getUrl('pagina') ?>">Paginas</a></li>
+    		    <li <?php if (Lib\App::getRouter()->getController() == 'contato') { ?>class="active"<?php } ?>><a href="<?= Lib\App::getRouter()->getUrl('contato') ?>">Contato</a></li>
+		    <li><a href="<?= Lib\App::getRouter()->getUrl('usuario', 'logout') ?>">Logout</a></li>
     		</ul>
 		<?php endif; ?>
 	    </div><!--/.nav-collapse -->
@@ -64,8 +64,8 @@ To change this license header, choose License Headers in Project Properties.
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="static/js/bootstrap.min.js"></script>
-    <script src="static/js/admin.js"></script>
+    <script src="<?= Lib\App::getRouter()->getResourceUrl('static/js/bootstrap.min.js') ?>"></script>
+    <script src="<?= Lib\App::getRouter()->getResourceUrl('static/js/admin.js') ?>"></script>
 </body>
 </html>
 

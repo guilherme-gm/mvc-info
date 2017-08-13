@@ -8,6 +8,7 @@
 
 namespace Controllers;
 
+use Lib\App;
 use Lib\Controller;
 use Lib\Session;
 use Lib\Router;
@@ -27,7 +28,7 @@ class UsuarioController extends Controller {
 	    
 	    if ($login == FALSE || $senha == FALSE) {
 		Session::setFlash('Todos os campos são obrigatórios.');
-		Router::redirect('?route=admin&module=usuario&action=login');
+		Router::redirect(App::getRouter()->getUrl('usuario', 'login', [], 'admin'));
 	    }
 	    
 	    $usuario = Usuario::getByLogin($login);
@@ -39,13 +40,13 @@ class UsuarioController extends Controller {
 		Session::set('usuario', $usuario);
 	    }
 	    
-	    Router::redirect('?route=admin');
+	    Router::redirect(App::getRouter()->getUrl('', '', [], 'admin'));
 	}
     }
     
     public function admin_logout() {
 	Session::destroy();
-	Router::redirect('?route=admin');
+	Router::redirect(App::getRouter()->getUrl('', '', [], 'admin'));
     }
 
 }

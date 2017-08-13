@@ -15,9 +15,9 @@ To change this license header, choose License Headers in Project Properties.
 <title><?= Lib\Config::get('site_name') ?></title>
 
 <!-- Bootstrap -->
-<link href="static/css/bootstrap.min.css" rel="stylesheet">
-<link href="static/css/bootstrap-theme.min.css" rel="stylesheet">
-<link href="static/css/style.css" rel="stylesheet">
+<link href="<?= Lib\App::getRouter()->getResourceUrl('static/css/bootstrap.min.css') ?>" rel="stylesheet">
+<link href="<?= Lib\App::getRouter()->getResourceUrl('static/css/bootstrap-theme.min.css') ?>" rel="stylesheet">
+<link href="<?= Lib\App::getRouter()->getResourceUrl('static/css/style.css') ?>" rel="stylesheet">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,12 +31,12 @@ To change this license header, choose License Headers in Project Properties.
     <nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 	    <div class="navbar-header">
-		<a class="navbar-brand" href="./"><?= Lib\Config::get('site_name') ?></a>
+		<a class="navbar-brand" href="<?= Lib\App::getRouter()->getUrl() ?>"><?= Lib\Config::get('site_name') ?></a>
 	    </div>
 	    <div id="navbar" class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
-		    <li <?php if (Lib\App::getRouter()->getController() == 'pagina') { ?>class="active"<?php } ?>><a href="?module=pagina">Paginas</a></li>
-		    <li <?php if (Lib\App::getRouter()->getController() == 'contato') { ?>class="active"<?php } ?>><a href="?module=contato">Contato</a></li>
+		    <li <?php if (Lib\App::getRouter()->getController() == 'pagina') { ?>class="active"<?php } ?>><a href="<?= Lib\App::getRouter()->getUrl('pagina') ?>">Paginas</a></li>
+		    <li <?php if (Lib\App::getRouter()->getController() == 'contato') { ?>class="active"<?php } ?>><a href="<?= Lib\App::getRouter()->getUrl('contato') ?>">Contato</a></li>
 		</ul>
 	    </div><!--/.nav-collapse -->
 	</div>
@@ -61,7 +61,7 @@ To change this license header, choose License Headers in Project Properties.
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="static/js/bootstrap.min.js"></script>
+    <script src="<?= Lib\App::getRouter()->getResourceUrl('static/js/bootstrap.min.js') ?>"></script>
 </body>
 </html>
 

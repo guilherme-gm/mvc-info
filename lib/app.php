@@ -26,6 +26,10 @@ class App {
      */
     protected static $router;
 
+    /**
+     *
+     * @return Router
+     */
     static function getRouter() {
 	return self::$router;
     }

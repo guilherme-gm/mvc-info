@@ -6,11 +6,11 @@
     	<tr>
     	    <td><?= $pagina->getTitulo() ?></td>
     	    <td class="text-right">
-    		<a href="?route=admin&module=pagina&action=editar&id=<?= $pagina->getIdPagina() ?>"
+    		<a href="<?= Lib\App::getRouter()->getUrl('pagina', 'editar', [$pagina->getIdPagina()]) ?>"
     		   class="btn btn-sm btn-primary">
     		    Editar
     		</a>
-    		<a href="?route=admin&module=pagina&action=excluir&id=<?= $pagina->getIdPagina() ?>"
+    		<a href="<?= Lib\App::getRouter()->getUrl('pagina', 'excluir', [$pagina->getIdPagina()]) ?>"
     		   class="btn btn-sm btn-danger"
 		   onclick="return confirmaExcluir()">
     		    Excluir
@@ -24,7 +24,7 @@
 
 <br />
 <div>
-    <a href="?route=admin&module=pagina&action=nova"
+    <a href="<?= Lib\App::getRouter()->getUrl('pagina', 'nova') ?>"
        class="btn btn-sm btn-success">
 	Nova Página
     </a>
