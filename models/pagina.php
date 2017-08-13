@@ -22,16 +22,18 @@ class Pagina extends Model {
     private $titulo;
     private $conteudo;
     private $publicado;
-
-    //private $autor;
+    /*
+     * @var Usuario
+     */
+    private $autor;
 
     public static function getPaginas($apenasPublicado = false) {
 	$conn = DB::getConnection();
 	
 	if ($apenasPublicado == FALSE) {
-	    $query = 'SELECT `idPagina`, `titulo`, `conteudo`, `publicado` FROM `Pagina`';
+	    $query = 'SELECT `idPagina`, `titulo`, `conteudo`, `publicado`, `Usuario_idUsuario` FROM `Pagina`';
 	} else {
-	    $query = 'SELECT `idPagina`, `titulo`, `conteudo`, `publicado` FROM `Pagina` WHERE `publicado` = 1';
+	    $query = 'SELECT `idPagina`, `titulo`, `conteudo`, `publicado`, `Usuario_idUsuario` FROM `Pagina` WHERE `publicado` = 1';
 	}
 	$result = $conn->query($query);
 	if ($result === FALSE) {
@@ -40,7 +42,7 @@ class Pagina extends Model {
 	
 	$paginas = [];
 	while ($row = $result->fetch_assoc()) {
-	    $paginas[] = new Pagina($row['idPagina'], $row['titulo'], $row['conteudo'], $row['publicado']);
+	    $paginas[] = new Pagina($row['idPagina'], $row['titulo'], $row['conteudo'], $row['publicado'], Usuario::getById($row['Usuario_idUsuario']));
 	}
 	
 	$result->close();
@@ -51,7 +53,7 @@ class Pagina extends Model {
     public static function getPaginaPorId($idPagina) {
 	$conn = DB::getConnection();
 	
-	$query = 'SELECT `idPagina`, `titulo`, `conteudo`, `publicado` FROM `Pagina` WHERE `idPagina` = ?';
+	$query = 'SELECT `idPagina`, `titulo`, `conteudo`, `publicado`, `Usuario_idUsuario` FROM `Pagina` WHERE `idPagina` = ?';
 	$stmt = $conn->prepare($query);
 	if ($stmt === FALSE) {
 	    throw new \Exception("Falha ao preparar query. Erro: {$conn->error}");
@@ -67,7 +69,7 @@ class Pagina extends Model {
 	
 	$result = $stmt->get_result();
 	if ($row = $result->fetch_assoc()) {
-	    $pagina = new Pagina($row['idPagina'], $row['titulo'], $row['conteudo'], $row['publicado']);
+	    $pagina = new Pagina($row['idPagina'], $row['titulo'], $row['conteudo'], $row['publicado'], Usuario::getById('Usuario_idUsuario'));
 	} else {
 	    $pagina = NULL;
 	}
@@ -96,7 +98,7 @@ class Pagina extends Model {
 	$titulo = $pagina->getTitulo();
 	$conteudo = $pagina->getConteudo();
 	$publicado = $pagina->getPublicado();
-	$idUsuario = 1;
+	$idUsuario = $pagina->getAutor()->getIdUsuario();
 	if ($stmt->bind_param('ssii', $titulo, $conteudo, $publicado, $idUsuario) === FALSE) {
 	    throw new \Exception("Falha ao associar parametros. Erro: {$stmt->error}");
 	}
@@ -127,7 +129,7 @@ class Pagina extends Model {
 	$titulo = $pagina->getTitulo();
 	$conteudo = $pagina->getConteudo();
 	$publicado = $pagina->getPublicado();
-	$idUsuario = 1;
+	$idUsuario = $pagina->getAutor()->getIdUsuario();
 	if ($stmt->bind_param('ssiii', $titulo, $conteudo, $publicado, $idUsuario, $idPagina) === FALSE) {
 	    throw new \Exception("Falha ao associar parametros. Erro: {$stmt->error}");
 	}
@@ -195,12 +197,24 @@ class Pagina extends Model {
     function setPublicado($publicado) {
 	$this->publicado = $publicado;
     }
+    
+    /**
+     * @return Usuario
+     */
+    function getAutor() {
+	return $this->autor;
+    }
 
-    function __construct($idPagina, $titulo, $conteudo, $publicado) {
+    function setAutor($autor) {
+	$this->autor = $autor;
+    }
+
+    function __construct($idPagina, $titulo, $conteudo, $publicado, $autor) {
 	$this->idPagina = $idPagina;
 	$this->titulo = $titulo;
 	$this->conteudo = $conteudo;
 	$this->publicado = $publicado;
+	$this->autor = $autor;
     }
 
 }

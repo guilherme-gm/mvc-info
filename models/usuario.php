@@ -54,6 +54,36 @@ class Usuario extends Model {
 	
 	return $usuario;
     }
+    
+    public static function getById($id) {
+	$conn = DB::getConnection();
+	
+	$query = 'SELECT `idUsuario`, `nome`, `usuario`, `senha`, `cargo`, `ativo` FROM `Usuario` WHERE `idUsuario` = ?';
+	$stmt = $conn->prepare($query);
+	if ($stmt === FALSE) {
+	    throw new \Exception("Falha ao preparar query. Erro: {$conn->error}");
+	}
+	
+	if ($stmt->bind_param('i', $id) === FALSE) {
+	    throw new \Exception("Falha ao associar parametros. Erro: {$stmt->error}");
+	}
+	
+	if ($stmt->execute() === FALSE) {
+	    throw new \Exception("Falha ao executar query. Erro: {$stmt->error}");
+	}
+	
+	$result = $stmt->get_result();
+	if ($row = $result->fetch_assoc()) {
+	    $usuario = new Usuario($row['idUsuario'], $row['nome'], $row['usuario'], $row['senha'], $row['cargo'], $row['ativo']);
+	} else {
+	    $usuario = NULL;
+	}
+	
+	$result->close();
+	$stmt->close();
+	
+	return $usuario;
+    }
 
     function getIdUsuario() {
 	return $this->idUsuario;

@@ -41,7 +41,8 @@ class PaginaController extends Controller {
 		Router::redirect(App::getRouter()->getUrl('pagina', 'nova'));
 	    }
 
-	    $pagina = new Pagina(0, $titulo, $conteudo, $publicado);
+	    $usuario = Session::get('usuario');
+	    $pagina = new Pagina(0, $titulo, $conteudo, $publicado, $usuario);
 	    Pagina::inserir($pagina);
 
 	    Session::flash('Página criada com sucesso.');
@@ -65,7 +66,8 @@ class PaginaController extends Controller {
 		Router::redirect(App::getRouter()->getUrl('pagina', 'editar', [$idPagina]));
 	    }
 
-	    $pagina = new Pagina($idPagina, $titulo, $conteudo, $publicado);
+	    $usuario = Session::get('usuario');
+	    $pagina = new Pagina($idPagina, $titulo, $conteudo, $publicado, $usuario);
 	    Pagina::atualizar($pagina);
 
 	    Session::flash('Página atualizada com sucesso.');
